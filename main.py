@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-token = "MTA0MTI4Nzg2MDg2MDQ5MzkwNg.GePyfF.vRoVs_aiCKJVbcBEKQVEMJW1UFLjPfp12176Y8"
+token = ""
 
 # useful function
 
