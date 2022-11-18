@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 token = ""
+newcommer_channel_id = 0
 
 
 def get_role_id(member):
@@ -26,13 +27,13 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print(f'We have logged in as {bot.user}')
 
-    channel = bot.get_channel(1043181259632955432)
+    channel = bot.get_channel(newcommer_channel_id)
     await channel.send(f'{bot.user.mention} is live')
 
 
 @bot.event
 async def on_disconnect():
-    channel = bot.get_channel(1043181259632955432)
+    channel = bot.get_channel(newcommer_channel_id)
     await channel.send(f'{bot.user.mention} is off')
 
 ###########################
@@ -269,12 +270,17 @@ async def on_member_join(member):
 
 
 @bot.command(name="create")
-async def create_set_up(ctx):
+async def create_set_up(ctx, user=None):
     """
     Command to manually set up the environment if needed
     definitely shouldnt be just repeated code from on_member_join lmao
     """
-    member = ctx.message.author
+    if user:
+        for m in ctx.guild.members:
+            if user in m.name:
+                member = m
+    else:
+        member = ctx.message.author
     role = await member.guild.create_role(name=member.display_name)
 
     # give people the right to manage roles to be able to ban people from their channels
@@ -532,6 +538,8 @@ async def create_set_up(ctx):
     forum_channel = await member.guild.create_forum(name=f'{member.display_name}-tl', category=category, overwrites=overwrites)
     voice_channel = await member.guild.create_voice_channel(name=f'{member.display_name}-space', category=category, overwrites=overwrites)
 
+    print(f'> > The environment for {member.name} is set up.')
+
 
 @bot.event
 async def on_member_remove(member):
@@ -632,6 +640,9 @@ async def unfollow(ctx, user):
 
 @bot.command()  # name="role"
 async def role_permission_update(ctx):
+    """
+    Command to fix something at first but could be useful to attribute permissions for a group of roles
+    """
     permissions = discord.Permissions()
     permissions.update(create_instant_invite=True,
                        kick_members=False,
@@ -689,6 +700,19 @@ async def role_permission_update(ctx):
                 print(f'working on {role.name}')
                 await role.edit(permissions=permissions)
     print(f'it worked!')
+
+
+@bot.command(name="catchup")  # name="catchup"
+async def catch_up(ctx):
+    """
+    Command to catchup with server newcommers while the bot was offline
+    """
+    print(f'Catching up while the bot was gone...')
+    for member in ctx.guild.members:
+        if len(member.roles) == 1:
+            print(f'> {member.name} is a new member')
+            await create_set_up(ctx, user=member.name)
+    print(f'Done!')
 
 
 bot.run(token)
