@@ -26,6 +26,15 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print(f'We have logged in as {bot.user}')
 
+    channel = bot.get_channel(1043181259632955432)
+    await channel.send(f'{bot.user.mention} is live')
+
+
+@bot.event
+async def on_disconnect():
+    channel = bot.get_channel(1043181259632955432)
+    await channel.send(f'{bot.user.mention} is off')
+
 ###########################
 # USER ENVIRONMENT SET UP #
 ###########################
@@ -267,6 +276,57 @@ async def create_set_up(ctx):
     """
     member = ctx.message.author
     role = await member.guild.create_role(name=member.display_name)
+
+    # give people the right to manage roles to be able to ban people from their channels
+    permissions = discord.Permissions()
+    permissions.update(create_instant_invite=True,
+                       kick_members=False,
+                       ban_members=False,
+                       administrator=False,
+                       manage_channels=True,
+                       manage_guild=False,
+                       add_reactions=True,
+                       view_audit_log=False,
+                       priority_speaker=True,
+                       stream=True,
+                       read_messages=True,
+                       view_channel=True,
+                       send_messages=True,
+                       send_tts_messages=True,
+                       manage_messages=True,
+                       embed_links=True,
+                       attach_files=True,
+                       read_message_history=True,
+                       mention_everyone=True,
+                       external_emojis=True,
+                       use_external_emojis=True,
+                       view_guild_insights=False,
+                       connect=True,
+                       speak=True,
+                       mute_members=True,
+                       deafen_members=True,
+                       move_members=True,
+                       use_voice_activation=True,
+                       change_nickname=True,
+                       manage_nicknames=False,
+                       manage_roles=True,
+                       manage_permissions=False,
+                       manage_webhooks=True,
+                       manage_emojis=True,
+                       manage_emojis_and_stickers=True,
+                       use_application_commands=True,
+                       request_to_speak=True,
+                       manage_events=True,
+                       manage_threads=True,
+                       create_public_threads=True,
+                       create_private_threads=True,
+                       send_messages_in_threads=True,
+                       external_stickers=True,
+                       use_external_stickers=True,
+                       use_embedded_activities=True,
+                       moderate_members=True)
+    await role.edit(permissions=permissions)
+
     followers = await member.guild.create_role(name=f'{member.display_name}-follower')
     await member.add_roles(role)
     overwrites = {
@@ -513,6 +573,8 @@ async def follow(ctx, user):
     member = ctx.message.author
     r_name = f'{user}-follower'
 
+    followee = ""
+
     # just to grab the object user and to be able to mention them easily in the bot messages
     for mem in ctx.guild.members:
         if mem.display_name == user:
@@ -566,6 +628,67 @@ async def unfollow(ctx, user):
                 if role == m_role:
                     await member.remove_roles(role)
                     print(f'{member.name} has unfollowed {user}')
+
+
+@bot.command()  # name="role"
+async def role_permission_update(ctx):
+    permissions = discord.Permissions()
+    permissions.update(create_instant_invite=True,
+                       kick_members=False,
+                       ban_members=False,
+                       administrator=False,
+                       manage_channels=True,
+                       manage_guild=False,
+                       add_reactions=True,
+                       view_audit_log=False,
+                       priority_speaker=True,
+                       stream=True,
+                       read_messages=True,
+                       view_channel=True,
+                       send_messages=True,
+                       send_tts_messages=True,
+                       manage_messages=True,
+                       embed_links=True,
+                       attach_files=True,
+                       read_message_history=True,
+                       mention_everyone=True,
+                       external_emojis=True,
+                       use_external_emojis=True,
+                       view_guild_insights=False,
+                       connect=True,
+                       speak=True,
+                       mute_members=True,
+                       deafen_members=True,
+                       move_members=True,
+                       use_voice_activation=True,
+                       change_nickname=True,
+                       manage_nicknames=False,
+                       manage_roles=True,
+                       manage_permissions=False,
+                       manage_webhooks=True,
+                       manage_emojis=True,
+                       manage_emojis_and_stickers=True,
+                       use_application_commands=True,
+                       request_to_speak=True,
+                       manage_events=True,
+                       manage_threads=True,
+                       create_public_threads=True,
+                       create_private_threads=True,
+                       send_messages_in_threads=True,
+                       external_stickers=True,
+                       use_external_stickers=True,
+                       use_embedded_activities=True,
+                       moderate_members=True)
+
+    roles = ctx.guild.roles
+    for role in roles:
+        if 'follower' not in role.name:
+            if role.name == 'twt_mod':
+                pass
+            else:
+                print(f'working on {role.name}')
+                await role.edit(permissions=permissions)
+    print(f'it worked!')
 
 
 bot.run(token)
