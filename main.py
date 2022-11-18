@@ -26,6 +26,10 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print(f'We have logged in as {bot.user}')
 
+###########################
+# USER ENVIRONMENT SET UP #
+###########################
+
 
 @bot.event
 async def on_member_join(member):
@@ -255,50 +259,6 @@ async def on_member_join(member):
     print(f'The environment for {member.name} is set up.')
 
 
-@bot.event
-async def on_member_remove(member):
-    """
-    When a user leaves, their channels and roles get deleted
-    Some of it should be optional for optimisation
-    """
-    print(f'{member.name} has left.')
-
-    role_id = get_role_id(member)
-    role = member.guild.get_role(role_id)
-    await role.delete()
-
-    # for the test phase mostly - delete channels
-    channel_list = member.guild.by_category()
-    for channel in channel_list:
-        category = channel[0]
-        if category and member.display_name in category.name:
-            await category.delete()
-            for chan in channel[1]:
-                await chan.delete()
-
-    print(f'The environment for {member.name} has been removed.')
-
-
-@bot.command(name="follow")
-async def follow(ctx, user):
-    """
-    Bot command to call with !follow
-    Assigns the role name-follower to the user requesting
-    """
-    member = ctx.message.author
-    r_name = f'{user}-follower'
-
-    for mem in ctx.guild.members:
-        if mem.display_name == user:
-            followee = mem
-
-    for role in ctx.guild.roles:
-        if role.name == r_name:
-            await member.add_roles(role)
-            print(f'{member.name} is now following {user}')
-            await ctx.channel.send(f'{member.mention} is now following {followee.mention}')
-
-
 @bot.command(name="create")
 async def create_set_up(ctx):
     """
@@ -511,5 +471,101 @@ async def create_set_up(ctx):
     text_channel = await member.guild.create_text_channel(name=f'{member.display_name}-zone', category=category, overwrites=overwrites_text)
     forum_channel = await member.guild.create_forum(name=f'{member.display_name}-tl', category=category, overwrites=overwrites)
     voice_channel = await member.guild.create_voice_channel(name=f'{member.display_name}-space', category=category, overwrites=overwrites)
+
+
+@bot.event
+async def on_member_remove(member):
+    """
+    When a user leaves, their channels and roles get deleted
+    Some of it should be optional for optimisation
+    """
+    print(f'{member.name} has left.')
+
+    role_id = get_role_id(member)
+    role = member.guild.get_role(role_id)
+    await role.delete()
+
+    # for the test phase mostly - delete channels
+    channel_list = member.guild.by_category()
+    for channel in channel_list:
+        category = channel[0]
+        if category and member.display_name in category.name:
+            await category.delete()
+            for chan in channel[1]:
+                await chan.delete()
+
+    print(f'The environment for {member.name} has been removed.')
+
+
+###########################
+#    USER INTERACTIONS    #
+###########################
+
+@bot.command(name="follow")
+async def follow(ctx, user):
+    """
+    Bot command to call with !follow
+    Assigns the role username-follower to the member requesting
+
+    member = person sending in the request
+    user = person to follow
+    """
+    member = ctx.message.author
+    r_name = f'{user}-follower'
+
+    # just to grab the object user and to be able to mention them easily in the bot messages
+    for mem in ctx.guild.members:
+        if mem.display_name == user:
+            followee = mem
+
+    # values to make the bot verbose
+    already_following = False
+    user_found = False
+
+    for role in ctx.guild.roles:
+        if role.name == r_name:
+            user_found = True
+
+            # check to see if the member isn't already following the requested user
+            for m_role in member.roles:
+                if role == m_role:
+                    print(f'{member.name} is already following {user}')
+                    await ctx.channel.send(f'{member.name} is already following {user}')
+                    already_following = True
+
+            if not already_following:
+                await member.add_roles(role)
+                print(f'{member.name} is now following {user}')
+                await ctx.channel.send(f'{member.mention} is now following {followee.mention}')
+
+    if not user_found:
+        print(f'The user {user} is not in the server.')
+        await ctx.channel.send(f"Couldn't find {user} in the server.")
+
+
+@bot.command(name="unfollow")
+async def unfollow(ctx, user):
+    """
+    Similar to follow but in reverse
+
+    Bot command to call with !unfollow
+    De-assigns the role username-follower to the member requesting
+
+    member = person sending in the request
+    user = person to follow
+
+    NOT VERBOSE (on purpose)
+
+    Improvement possible: if we(the team of me and i) get this bot to work in dms, you could request privately to unfollow someone
+    """
+    member = ctx.message.author
+    r_name = f'{user}-follower'
+    for role in ctx.guild.roles:
+        if role.name == r_name:
+            for m_role in member.roles:
+                if role == m_role:
+                    await member.remove_roles(role)
+                    print(f'{member.name} has unfollowed {user}')
+
 
 bot.run(token)
