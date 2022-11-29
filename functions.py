@@ -96,3 +96,10 @@ async def follow(interaction, member, user):
     if not user_found:
         print(f'The user {user.name} is not in the server.')
         await interaction.response.send_message(f"Couldn't find {user.name} in the server.")
+
+
+def find_category(interaction, name):
+    categories = interaction.guild.categories
+    for cat in categories:
+        if cat.name == name:
+            return cat

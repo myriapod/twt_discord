@@ -1,11 +1,10 @@
 import discord
 from discord import app_commands
 from discord.ext import commands
-from botcommands import Follow, NSFW, CatchUp, Env
+from botcommands import Follow, NSFW, CatchUp, Env, Server
 import bot_intents
 
-token = ""
-
+token = open('token.txt').readline()
 
 intents = bot_intents.intents
 
@@ -58,12 +57,22 @@ async def make_follow(interaction: discord.Interaction, follower: discord.User, 
 
 
 @tree.command(name="catchup", description="Creates environment that weren't setup while the bot was offline")
-async def catch_up(interaction: discord.Interaction, message: str):
+async def catch_up(interaction: discord.Interaction, mode: str):
     catchup = CatchUp(interaction)
-    if message == "auto":
+    if mode == "auto":
         await catchup.auto()
-    elif message == "manual":
+    elif mode == "manual":
         await catchup.manual()
 
+
+@tree.command(name="forum", description="Creates a forum for the entered band name under the category #kpop-extravaganza")
+async def create_forum(interaction: discord.Interaction, name: str):
+    await Server(interaction).create_forum(name)
+
+
+@tree.command(name="server", description="Sets up the server with certain categories and features")
+@commands.has_permissions(administrator=True)
+async def server_set_up(interaction: discord.Interaction):
+    await Server(interaction).setup()
 
 client.run(token)

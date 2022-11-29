@@ -1,5 +1,5 @@
 import discord
-from functions import create_env, manual_env, get_member_roles
+from functions import create_env, manual_env, get_member_roles, find_category
 
 
 class Follow():
@@ -54,7 +54,6 @@ class Follow():
                         print(
                             f'{self.follower.name} has unfollowed {self.target.name}')
                         await self.interaction.response.send_message(f'You have unfollowed {self.target.mention}', ephemeral=True)
-
 
 
 class NSFW():
@@ -153,4 +152,15 @@ class Env():
             await self.message.channel.parent.edit(position=0)
             print(f'Forum {self.message.channel.parent} moved to the top')
 
-    
+
+class Server():
+    def __init__(self, interaction):
+        self.interaction = interaction
+        self.guild = interaction.guild
+
+    async def setup(self):
+        print(self.guild.categories)
+
+    async def create_forum(self, name):
+        kpop_cat = find_category(self.interaction, 'kpop-extravaganza')
+        await self.guild.create_forum(name=f'{name}', category=kpop_cat)
