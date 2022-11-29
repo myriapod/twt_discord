@@ -4,7 +4,7 @@ from discord.ext import commands
 from botcommands import Follow, NSFW, CatchUp, Env
 import bot_intents
 
-token = "MTA0MTI4Nzg2MDg2MDQ5MzkwNg.G7b6ok.qOjOATfPog3l8EtE_Ij3sVj0DFq-g8ecgUcsSg"
+token = ""
 
 
 intents = bot_intents.intents
