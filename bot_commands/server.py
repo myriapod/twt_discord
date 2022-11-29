@@ -1,5 +1,5 @@
 import discord
-from functions import find_category
+from tools.functions import find_category
 import re
 
 

@@ -7,7 +7,7 @@ from bot_commands.follow import Follow
 from bot_commands.mdni import NSFW
 from bot_commands.server import Server
 
-import bot_intents
+import tools.bot_intents as bot_intents
 
 token = open('token.txt').readline()
 
