@@ -1,4 +1,4 @@
-import permissions
+import tools.permissions as permissions
 
 
 async def create_env(member):
