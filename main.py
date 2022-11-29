@@ -1,7 +1,12 @@
 import discord
 from discord import app_commands
 from discord.ext import commands
-from botcommands import Follow, NSFW, CatchUp, Env, Server
+from bot_commands.catchup import CatchUp
+from bot_commands.env import Env
+from bot_commands.follow import Follow
+from bot_commands.mdni import NSFW
+from bot_commands.server import Server
+
 import bot_intents
 
 token = open('token.txt').readline()
