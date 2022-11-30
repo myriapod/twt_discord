@@ -3,7 +3,7 @@ A discord bot to emulate kpop twitter
 
 # Set up
 1. create a bot in the discord developper portal
-2. fill in your token in the text file
+2. fill in your token in the .env file
 3. run <code>main.py</code>
 
 
