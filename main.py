@@ -1,6 +1,10 @@
 import discord
 from discord import app_commands
 from discord.ext import commands
+
+import os
+from dotenv import load_dotenv
+
 from bot_commands.catchup import CatchUp
 from bot_commands.env import Env
 from bot_commands.follow import Follow
@@ -9,7 +13,9 @@ from bot_commands.server import Server
 
 import tools.bot_intents as bot_intents
 
-token = open('token.txt').readline()
+load_dotenv()
+
+token = os.getenv('TWT_DISCORD_API_KEY')
 
 intents = bot_intents.intents
 
@@ -80,4 +86,7 @@ async def create_forum(interaction: discord.Interaction, name: str):
 async def server_set_up(interaction: discord.Interaction):
     await Server(interaction).setup()
 
-client.run(token)
+try:
+    client.run(token)
+except:
+    print('Missing token. Please fill in the token variable in the .env file.')
