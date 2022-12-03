@@ -1,6 +1,7 @@
 import discord
 from tools.functions import create_env, get_member_roles
 
+
 class Env():
     def __init__(self, member=discord.Member, message=discord.Message):
         self.member = member
@@ -41,7 +42,7 @@ class Env():
         """
         new_category = self.message.channel.category
         if new_category and "zone" in new_category.name:
-            await new_category.edit(position=6)
+            await new_category.edit(position=2)
             print(f'Category {new_category.name} moved to the top')
         elif new_category:
             await self.message.channel.parent.edit(position=0)
