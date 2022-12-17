@@ -3,6 +3,10 @@ import discord
 # permissions
 # default all hidden
 default_no_read = discord.PermissionOverwrite(read_messages=False)
+role_channel = discord.PermissionOverwrite(
+    read_messages=True,
+    add_reactions=True,
+)
 channel_owner = discord.PermissionOverwrite(
     create_instant_invite=True,
     kick_members=False,
@@ -49,7 +53,8 @@ channel_owner = discord.PermissionOverwrite(
     external_stickers=True,
     use_external_stickers=True,
     use_embedded_activities=True,
-    moderate_members=True)
+    moderate_members=True
+)
 tl_follower = discord.PermissionOverwrite(
     create_instant_invite=True,
     kick_members=False,
@@ -96,7 +101,8 @@ tl_follower = discord.PermissionOverwrite(
     external_stickers=True,
     use_external_stickers=True,
     use_embedded_activities=True,
-    moderate_members=False)
+    moderate_members=False
+)
 text_follower = discord.PermissionOverwrite(
     create_instant_invite=True,
     kick_members=False,
@@ -143,4 +149,5 @@ text_follower = discord.PermissionOverwrite(
     external_stickers=True,
     use_external_stickers=True,
     use_embedded_activities=True,
-    moderate_members=False)
+    moderate_members=False
+)

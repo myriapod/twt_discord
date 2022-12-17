@@ -14,3 +14,14 @@ A discord bot to emulate kpop twitter
 
 It's important that you do not do any changes to the newly made server in order for everything to work properly and as intended.
 
+# Things the bot does
+- follow
+- unfollow
+- age restrict the personal categories
+- fandom (creates a dedicated forum and role)
+- reaction roles
+- sets up the environment for newcommers
+- manually set up of the environment
+
+# Things to add
+- get the bot to work in dms

@@ -45,5 +45,8 @@ class Env():
             await new_category.edit(position=2)
             print(f'Category {new_category.name} moved to the top')
         elif new_category:
-            await self.message.channel.parent.edit(position=0)
-            print(f'Forum {self.message.channel.parent} moved to the top')
+            try:
+                await self.message.channel.parent.edit(position=0)
+                print(f'Forum {self.message.channel.parent} moved to the top')
+            except AttributeError:
+                pass

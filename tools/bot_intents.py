@@ -10,3 +10,4 @@ intents.guild_typing = True
 intents.guilds = True
 intents.webhooks = True
 intents.dm_messages = True
+intents.reactions = True

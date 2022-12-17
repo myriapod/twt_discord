@@ -10,20 +10,21 @@ from bot_commands.env import Env
 from bot_commands.follow import Follow
 from bot_commands.mdni import NSFW
 from bot_commands.server import Server
+from bot_commands.fandom import Fandom
 
-import tools.bot_intents as bot_intents
+from tools.bot_intents import intents
+from tools.functions import find_channel
 
 load_dotenv()
 
 token = os.getenv('TWT_DISCORD_API_KEY')
-
-intents = bot_intents.intents
 
 
 class aclient(discord.Client):
     def __init__(self):
         super().__init__(intents=intents)
         self.synced = False
+        self.role_channel = False
 
     async def on_ready(self):
         await self.wait_until_ready()
@@ -41,6 +42,17 @@ class aclient(discord.Client):
     async def on_message(self, message):
         await Env(message=message).latest_msg()
 
+    async def on_raw_reaction_add(self, reaction):
+        guild = self.get_guild(reaction.guild_id)
+        reaction_channel = discord.utils.get(
+            guild.channels, name="fandom-role-assignment")  # type:ignore
+
+        if reaction.user_id != self.user.id:  # type:ignore
+            if reaction.channel_id == reaction_channel.id:  # type:ignore
+                await Fandom(reaction=reaction).assign_fandom(reaction_channel=reaction_channel)
+
+            # add a dm 'youve joined the xx fandom?'
+
 
 client = aclient()
 tree = app_commands.CommandTree(client)
@@ -56,7 +68,7 @@ async def unfollow_user(interaction: discord.Interaction, name: discord.User):
     await Follow(interaction, interaction.user, name).unfollow()
 
 
-@tree.command(name="mdni", description="Make your personal channels age restricted")
+@tree.command(name="mdni", description="Make your personal category age restricted")
 async def nsfw_category(interaction: discord.Interaction):
     await NSFW(interaction, interaction.user).mdni()
 
@@ -67,7 +79,7 @@ async def make_follow(interaction: discord.Interaction, follower: discord.User, 
     await Follow(interaction, follower=follower, target=followee).follow()
 
 
-@tree.command(name="catchup", description="Creates environment that weren't setup while the bot was offline")
+@tree.command(name="catchup", description="Creates environments that weren't setup while the bot was offline")
 async def catch_up(interaction: discord.Interaction, mode: str):
     catchup = CatchUp(interaction)
     if mode == "auto":
@@ -76,17 +88,17 @@ async def catch_up(interaction: discord.Interaction, mode: str):
         await catchup.manual()
 
 
-@tree.command(name="forum", description="Creates a forum for the entered band name under the category #kpop-extravaganza")
-async def create_forum(interaction: discord.Interaction, name: str):
-    await Server(interaction).create_forum(name)
+@tree.command(name="fandom", description="Creates a fandom")
+async def create_forum(interaction: discord.Interaction, name: str, emoji: str, hex_color: str):
+    await Server(interaction).create_fandom(name, emoji, hex_color)
 
 
-@tree.command(name="server", description="Sets up the server with certain categories and features")
+@tree.command(name="server", description="Sets up the server")
 @commands.has_permissions(administrator=True)
 async def server_set_up(interaction: discord.Interaction):
     await Server(interaction).setup()
 
 try:
-    client.run(token)
+    client.run(token)  # type:ignore
 except:
     print('Missing token. Please fill in the token variable in the .env file.')
