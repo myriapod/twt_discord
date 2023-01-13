@@ -28,7 +28,7 @@ async def create_env(member):
 
     text_channel = await member.guild.create_text_channel(name=f'{member.name}-zone', category=category, overwrites=overwrites_text)
 
-    forum_channel = await member.guild.create_forum(name=f'{member.name}-tl', category=category, overwrites=overwrites)
+    forum_channel = await member.guild.create_forum(name=f'{member.name}-feed', category=category, overwrites=overwrites)
 
     voice_channel = await member.guild.create_voice_channel(name=f'{member.name}-space', category=category, overwrites=overwrites)
 

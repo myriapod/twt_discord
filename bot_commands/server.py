@@ -74,8 +74,12 @@ This is the server map that will help guide you through the server.
 **{kpop_channel.mention}** is a semi-organized place that everyone can access. There are forums dedicated to certain bands/topics that users can create using the bot command `/forum`.
 
 The rest of the server is **personal categories** that can be accessed by others through the `/follow` command.
-Only the personal category owner can make new forum posts, but all of their followers can respond to a post, as well as post in the text channel.
-You should have full control and access over your personal category (ie. feel free to create or delete channels...)
+Each member gets a [your discord username]-MEGA-ZONE category that regroups:
+- [your discord username]-FEED forum channel: only you can create new forum posts, but your followers (the people who have access to your personal category) can respond to them in the threads.
+- [your discord username]-ZONE text channel: you and your followers can talk freely there without the above restrictions.
+- [your discord username]-SPACE voice channel: you and your followers can join, but you should still have more moderation rights in your own personal voice channel.
+
+You get moderation rights in your own category but please DO NOT change the name of your categories. It will make the bot go crazy.
         '''
         await self.guild.rules_channel.send(message)
 
