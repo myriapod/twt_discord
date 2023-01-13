@@ -37,5 +37,8 @@ To use a command, type <code>/</code> in any channel (there is a <code>#bot-comm
 - **catchup [auto or manual]** -- sets up the personal environment of newcommers who came while the bot was offline (auto: everything is handled by the bot, manual: the personal roles were created manually)
 - **make_follow [follower] [followee]** -- force a user (follower) to follow another (followee)
 
-# Planned improvements
+# Planned Improvements & Known Issues
 - Get the bot to work in DMs
+- Permission-lock some commands
+- It gets kind of crowded at the start of the server if people come in a huge wave
+- Ways to host the bot and make it available to others easily

@@ -11,6 +11,10 @@ class Server():
         self.guild = interaction.guild
 
     async def setup(self):
+
+        await self.interaction.response.defer()
+        await asyncio.sleep(1)
+
         if 'COMMUNITY' not in self.guild.features:  # doesnt work yet
             rules = await self.guild.create_text_channel(name='rules')
             announcements = await self.guild.create_text_channel(name='announcements')
@@ -76,8 +80,6 @@ You should have full control and access over your personal category (ie. feel fr
         await self.guild.rules_channel.send(message)
 
         # respond to the command
-        await self.interaction.response.defer()
-        await asyncio.sleep(5)
         await self.interaction.followup.send(f'The server has been configured. Visit {self.guild.rules_channel.mention} for more informations.')
 
     async def create_forum(self, name):
