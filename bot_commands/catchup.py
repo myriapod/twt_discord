@@ -1,4 +1,5 @@
 from tools.functions import create_env, manual_env
+import asyncio
 
 
 class CatchUp():
@@ -17,7 +18,9 @@ class CatchUp():
                 print(f'> {member.name} is a new member')
                 await create_env(member)
         print(f'Done!')
-        await self.interaction.response.send_message('All caught up!')
+        await self.interaction.response.defer()
+        await asyncio.sleep(5)
+        await self.interaction.followup.send('All caught up!')
 
     async def manual(self):
         print("Looking for users without environments...")
@@ -29,4 +32,6 @@ class CatchUp():
             if not env:
                 await manual_env(self.interaction, member)
         print(f'Done!')
-        await self.interaction.response.send_message('All caught up!')
+        await self.interaction.response.defer()
+        await asyncio.sleep(5)
+        await self.interaction.followup.send('All caught up!')

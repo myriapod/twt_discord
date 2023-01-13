@@ -2,6 +2,7 @@ import discord
 from tools.functions import find_category
 import re
 import tools.permissions as permissions
+import asyncio
 
 
 class Server():
@@ -75,7 +76,9 @@ You should have full control and access over your personal category (ie. feel fr
         await self.guild.rules_channel.send(message)
 
         # respond to the command
-        await self.interaction.response.send_message(f'The server has been configured. Visit {self.guild.rules_channel.mention} for more informations.')
+        await self.interaction.response.defer()
+        await asyncio.sleep(5)
+        await self.interaction.followup.send(f'The server has been configured. Visit {self.guild.rules_channel.mention} for more informations.')
 
     async def create_forum(self, name):
         kpop_cat = find_category(self.interaction, 'kpop extravaganza')
@@ -97,4 +100,6 @@ You should have full control and access over your personal category (ie. feel fr
         await fandom_message.add_reaction(emoji)
 
         # type:ignore
-        await self.interaction.response.send_message(f'The fandom {name} has been created! You can now use the {forum.mention} forum and also attribute yourself the {name} role in {role_channel.mention} by clicking on the emoji under {name}')
+        await self.interaction.response.defer()
+        await asyncio.sleep(2)
+        await self.interaction.followup.send(f'The fandom {name} has been created! You can now use the {forum.mention} forum and also attribute yourself the {name} role in {role_channel.mention} by clicking on the emoji under {name}')

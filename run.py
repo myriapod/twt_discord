@@ -95,7 +95,7 @@ async def create_forum(interaction: discord.Interaction, name: str, emoji: str, 
 
 
 @tree.command(name="server", description="Sets up the server")
-@commands.is_owner()
+@commands.has_permissions(administrator=True)
 async def server_set_up(interaction: discord.Interaction):
     await Server(interaction).setup()
 

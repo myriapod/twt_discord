@@ -11,8 +11,8 @@ The idea in a few bullet points:
 # Set up
 ## Setting up the bot locally
 1. Clone the GitHub repo (for now it only works with local hosting) (<a href="https://www.youtube.com/watch?v=zahvzwzdM4Y">guide to run a bot on replit</a> (not personally tested yet))
-2. Create a bot in the Discord Developer Portal (<a href="https://discordpy.readthedocs.io/en/stable/discord.html">guide</a>)
-3. The bot permissions needed are as follows: 
+2. Create a bot in the <a href="https://discord.com/developers/applications">Discord Developer Portal</a> (<a href="https://discordpy.readthedocs.io/en/stable/discord.html">guide</a>)
+3. The bot permissions needed are as follows: 1497064750320
 3. Fill in your token in the .env file
 4. Run <code>main.py</code> to make the bot online
 
@@ -32,6 +32,7 @@ To use a command, type <code>/</code> in any channel (there is a <code>#bot-comm
 - **fandom [name] [emoji] [hex color]** -- creates a dedicated forum (accessible to everyone) and colored role that you can assign yourself in the <code>#reaction-roles</code> channel
 
 ## Restricted to the moderation
+(in theory not really in execution...)
 - **server** -- sets up the server
 - **catchup [auto or manual]** -- sets up the personal environment of newcommers who came while the bot was offline (auto: everything is handled by the bot, manual: the personal roles were created manually)
 - **make_follow [follower] [followee]** -- force a user (follower) to follow another (followee)
