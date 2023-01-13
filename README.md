@@ -25,11 +25,11 @@ The idea in a few bullet points:
 # Commands supported
 ## Accessible to all users
 To use a command, type <code>/</code> in any channel (there is a <code>#bot-commands</code> channel created by default) to display the commands menu.
-- *help*
+- _help
 - *follow [person to follow]* **(the name inpupt lets you search through the members of the server)** -- grants you access to the personal channels of the person you want to follow
 - *unfollow [person to unfollow]* **(the name inpupt lets you search through the members of the server)** -- removes the access to the personal channels of the person you want to unfollow
 - *mdni* -- puts an age restriction on your personal channels
-- *fandom [name] [emoji] [hex color]* -- creates a dedicated forum (accessible to everyone) and colored role that you can assign yourself in the <code><#reaction-roles</code> channel
+- *fandom [name] [emoji] [hex color]* -- creates a dedicated forum (accessible to everyone) and colored role that you can assign yourself in the <code>#reaction-roles</code> channel
 
 ## Restricted to the moderation
 - *server* -- sets up the server
