@@ -80,6 +80,7 @@ async def make_follow(interaction: discord.Interaction, follower: discord.User, 
 
 
 @tree.command(name="catchup", description="Creates environments that weren't setup while the bot was offline")
+@commands.has_permissions(administrator=True)
 async def catch_up(interaction: discord.Interaction, mode: str):
     catchup = CatchUp(interaction)
     if mode == "auto":
@@ -94,7 +95,7 @@ async def create_forum(interaction: discord.Interaction, name: str, emoji: str, 
 
 
 @tree.command(name="server", description="Sets up the server")
-@commands.has_permissions(administrator=True)
+@commands.is_owner()
 async def server_set_up(interaction: discord.Interaction):
     await Server(interaction).setup()
 
