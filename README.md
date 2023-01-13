@@ -12,7 +12,7 @@ The idea in a few bullet points:
 ## Setting up the bot locally
 1. Clone the GitHub repo (for now it only works with local hosting) (<a href="https://www.youtube.com/watch?v=zahvzwzdM4Y">guide to run a bot on replit</a> (not personally tested yet))
 2. Create a bot in the <a href="https://discord.com/developers/applications">Discord Developer Portal</a> (<a href="https://discordpy.readthedocs.io/en/stable/discord.html">guide</a>)
-3. The easiest way to get the bot to work is to give it Administrator permissions. You can use this link to add it to your server by replacing CLIENT_ID with your actual client ID: <&permissions=8&scope=bot>https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=8&scope=bot</code>
+3. The easiest way to get the bot to work is to give it Administrator permissions. You can use this link to add it to your server by replacing CLIENT_ID with your actual client ID: <code>https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=8&scope=bot</code>
 4. Fill in your token in the .env file
 5. Run <code>main.py</code> to make the bot online
 
