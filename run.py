@@ -99,6 +99,10 @@ async def create_forum(interaction: discord.Interaction, name: str, emoji: str, 
 async def server_set_up(interaction: discord.Interaction):
     await Server(interaction).setup()
 
+@tree.command(name="help", description="Help for the supported commands")
+async def help_command(interaction: discord.Interaction):
+    await Server(interaction).help_command()
+
 try:
     client.run(token)  # type:ignore
 except:

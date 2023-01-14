@@ -39,6 +39,6 @@ To use a command, type <code>/</code> in any channel (there is a <code>#bot-comm
 
 # Planned Improvements & Known Issues
 - Get the bot to work in DMs
-- Permission-lock some commands
+- Permission-lock some commands (turn them into !commands?)
 - It gets kind of crowded at the start of the server if people come in a huge wave
 - Ways to host the bot and make it available to others easily

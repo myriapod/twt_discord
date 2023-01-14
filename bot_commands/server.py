@@ -9,6 +9,7 @@ class Server():
     def __init__(self, interaction):
         self.interaction = interaction
         self.guild = interaction.guild
+        self.role_assignment = None
 
     async def setup(self):
 
@@ -52,8 +53,8 @@ class Server():
 
         # role-assignment channel
         overwrite_role = {self.guild.default_role: permissions.role_channel}
-        role_assignment = await self.guild.create_text_channel(name='fandom role assignment', position=5, overwrites=overwrite_role)
-        await role_assignment.send(f'Click on the emoji below the fandom you want to join to assign yourself the role.')
+        self.role_assignment = await self.guild.create_text_channel(name='fandom role assignment', position=5, overwrites=overwrite_role)
+        await self.role_assignment.send(f'Click on the emoji below the fandom you want to join to assign yourself the role.')
 
         # kpop-extravaganza
         # bot can create forum channels
@@ -69,7 +70,7 @@ This is the server map that will help guide you through the server.
 
 **{general_category.mention}** is the general text ({general_text.mention}) and voice chat ({general_voice.mention}) that everyone in the server has access to.
 
-{role_assignment.mention} is a channel where you can assign yourself fandom roles. They are purely for cosmetic purposes and don't bring special access to any of the fandom forums as they are accessible to everyone on the server by default.
+{self.role_assignment.mention} is a channel where you can assign yourself fandom roles. They are purely for cosmetic purposes and don't bring special access to any of the fandom forums as they are accessible to everyone on the server by default. A new role is created when a forum for a fandom is created.
 
 **{kpop_channel.mention}** is a semi-organized place that everyone can access. There are forums dedicated to certain bands/topics that users can create using the bot command `/forum`.
 
@@ -109,3 +110,14 @@ You get moderation rights in your own category but please DO NOT change the name
         await self.interaction.response.defer()
         await asyncio.sleep(2)
         await self.interaction.followup.send(f'The fandom {name} has been created! You can now use the {forum.mention} forum and also attribute yourself the {name} role in {role_channel.mention} by clicking on the emoji under {name}')
+
+    async def help_command(self):
+        message = f'''
+List of available commands:
+- `/help` : displays this message
+- `/follow [user to follow]` : grants you access to the personal channels of the person you want to follow
+- `/unfollow [person to unfollow]` : removes the access to the personal channels of the person you want to unfollow
+- `/mdni` : puts an age restriction on your personal channels
+- `/fandom [name] [emoji] [hex color]` : creates a dedicated forum (accessible to everyone) and colored role that you can assign yourself in the {self.role_assignment.mention} channel
+        '''
+        await self.interaction.send_message(message)
