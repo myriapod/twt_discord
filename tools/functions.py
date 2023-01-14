@@ -106,7 +106,6 @@ def find_category(interaction, name):
 
 
 def find_channel(guild, name):
-    channels = guild.channel
-    for cat in channels:
+    for cat in guild.channels:
         if cat.name == name:
             return cat
