@@ -16,12 +16,12 @@ class Server():
         await self.interaction.response.defer()
         await asyncio.sleep(1)
 
-        if 'COMMUNITY' not in self.guild.features:  # doesnt work yet
+        '''if 'COMMUNITY' not in self.guild.features:  # doesnt work yet
             rules = await self.guild.create_text_channel(name='rules')
             announcements = await self.guild.create_text_channel(name='announcements')
 
-            await self.guild.edit(community=True, rules_channel=rules, public_updates_channel=announcements)
-            # discord.app_commands.errors.CommandInvokeError: Command 'server' raised an exception: Forbidden: 403 Forbidden (error code: 40006): This feature has been temporarily disabled
+            await self.guild.edit(rules_channel=rules, public_updates_channel=announcements)
+            # discord.app_commands.errors.CommandInvokeError: Command 'server' raised an exception: Forbidden: 403 Forbidden (error code: 40006): This feature has been temporarily disabled'''
 
         for category in self.guild.categories:
             await category.delete()
