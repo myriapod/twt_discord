@@ -13,7 +13,6 @@ from bot_commands.server import Server
 from bot_commands.fandom import Fandom
 
 from tools.bot_intents import intents
-from tools.functions import find_channel
 
 load_dotenv()
 
@@ -98,6 +97,7 @@ async def create_forum(interaction: discord.Interaction, name: str, emoji: str, 
 @commands.has_permissions(administrator=True)
 async def server_set_up(interaction: discord.Interaction):
     await Server(interaction).setup()
+
 
 @tree.command(name="help", description="Help for the supported commands")
 async def help_command(interaction: discord.Interaction):

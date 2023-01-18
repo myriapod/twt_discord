@@ -2,6 +2,15 @@ import tools.permissions as permissions
 
 
 async def create_env(member):
+    """
+    Creates the environment for member, made of:
+    - role [member.name] assigned to the member
+    - role [member.name-follower]
+    - category [member.name-mega-zone]
+    - forum channel [member.name-feed]
+    - text channel [member.name-zone]
+    - voice channel [member.name-space]
+    """
     # create the name role
     role = await member.guild.create_role(name=member.name)
 
@@ -11,7 +20,6 @@ async def create_env(member):
     # assign their name role
     await member.add_roles(role)
 
-    # create personal channels and categories
     # permissions for category, forum and voice
     overwrites = {
         member.guild.default_role: permissions.default_no_read,
@@ -24,6 +32,7 @@ async def create_env(member):
         member.guild.get_role(followers.id): permissions.text_follower
     }
 
+    # create personal channels and categories
     category = await member.guild.create_category(f'{member.name}-mega-zone', overwrites=overwrites)
 
     text_channel = await member.guild.create_text_channel(name=f'{member.name}-zone', category=category, overwrites=overwrites_text)
@@ -38,7 +47,8 @@ async def create_env(member):
 async def manual_env(ctx, member):
     """
     Command to manually set up the environment if needed
-    definitely shouldnt be just repeated code from on_member_join lmao
+    Implies that the name role and the follower role have been manually created
+    Useful for when the bot gets rate limited on creating roles
     """
     role = None
     followers = None
@@ -57,9 +67,8 @@ async def manual_env(ctx, member):
 
 def get_member_roles(member):
     """
-    Useful function:
-    get the id of the user-linked role from the user
-    Improvement possible: could be getting the role itself, not useful for now
+    NOT USED function:
+    get the roles of the user-linked roles from the user
     """
     roles = []
     for role in member.guild.roles:
@@ -71,6 +80,10 @@ def get_member_roles(member):
 
 
 async def follow(interaction, member, user):
+    """
+    Function to follow a user as member
+    // Could be rewritten better
+    """
     r_name = f'{user.name}-follower'
 
     # values to make the bot verbose
