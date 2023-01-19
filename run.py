@@ -18,7 +18,6 @@ load_dotenv()
 
 token = os.getenv('TWT_DISCORD_API_KEY')
 
-
 class aclient(discord.Client):
     def __init__(self):
         super().__init__(intents=intents)
@@ -33,13 +32,17 @@ class aclient(discord.Client):
         print(f'We have logged in as {self.user}')
 
     async def on_member_join(self, member):
+        channel = await member.create_dm()
+        welcome = open('bot_messages/welcome.txt','r', encoding='utf-8')       
+        await channel.send(welcome.read())
         await Env(member=member).join()
 
     async def on_member_remove(self, member):
         await Env(member=member).leave()
 
     async def on_message(self, message):
-        await Env(message=message).latest_msg()
+        if message.channel.type != discord.ChannelType.private:
+            await Env(message=message).latest_msg()
 
     async def on_raw_reaction_add(self, reaction):
         guild = self.get_guild(reaction.guild_id)
@@ -59,49 +62,80 @@ tree = app_commands.CommandTree(client)
 
 @tree.command(name="follow", description="Follow a user")
 async def follow_user(interaction: discord.Interaction, name: discord.User):
-    await Follow(interaction, interaction.user, name).follow()
+    if interaction.channel.type == discord.ChannelType.private:
+        await interaction.response.send_message('This command can only be used in the server.')
+    else:
+        await Follow(interaction, interaction.user, name).follow()
 
 
 @tree.command(name="unfollow", description="Unfollow a user")
 async def unfollow_user(interaction: discord.Interaction, name: discord.User):
-    await Follow(interaction, interaction.user, name).unfollow()
+    if interaction.channel.type == discord.ChannelType.private:
+        await interaction.response.send_message('This command can only be used in the server.')
+    else:
+        await Follow(interaction, interaction.user, name).unfollow()
 
 
 @tree.command(name="mdni", description="Make your personal category age restricted")
 async def nsfw_category(interaction: discord.Interaction):
-    await NSFW(interaction, interaction.user).mdni()
+    if interaction.channel.type == discord.ChannelType.private:
+        await interaction.response.send_message('This command can only be used in the server.')
+    else:
+        await NSFW(interaction, interaction.user).mdni()
 
 
 @tree.command(name="make_follow", description="Make a user follow another")
 @commands.has_permissions(administrator=True)
 async def make_follow(interaction: discord.Interaction, follower: discord.User, followee: discord.User):
-    await Follow(interaction, follower=follower, target=followee).follow()
+    if interaction.channel.type == discord.ChannelType.private:
+        await interaction.response.send_message('This command can only be used in the server.')
+    else:
+        await Follow(interaction, follower=follower, target=followee).follow()
 
 
 @tree.command(name="catchup", description="Creates environments that weren't setup while the bot was offline")
 @commands.has_permissions(administrator=True)
 async def catch_up(interaction: discord.Interaction, mode: str):
-    catchup = CatchUp(interaction)
-    if mode == "auto":
-        await catchup.auto()
-    elif mode == "manual":
-        await catchup.manual()
+    if interaction.channel.type == discord.ChannelType.private:
+        await interaction.response.send_message('This command can only be used in the server.')
+    else:
+        catchup = CatchUp(interaction)
+        if mode == "auto":
+            await catchup.auto()
+        elif mode == "manual":
+            await catchup.manual()
 
 
 @tree.command(name="fandom", description="Creates a fandom")
 async def create_forum(interaction: discord.Interaction, name: str, emoji: str, hex_color: str):
-    await Server(interaction).create_fandom(name, emoji, hex_color)
+    if interaction.channel.type == discord.ChannelType.private:
+        await interaction.response.send_message('This command can only be used in the server.')
+    else:
+        await Server(interaction).create_fandom(name, emoji, hex_color)
 
 
 @tree.command(name="server", description="Sets up the server")
 @commands.has_permissions(administrator=True)
 async def server_set_up(interaction: discord.Interaction):
-    await Server(interaction).setup()
+    if interaction.channel.type == discord.ChannelType.private:
+        await interaction.response.send_message('This command can only be used in the server.')
+    else:
+        await Server(interaction).setup()
 
 
 @tree.command(name="help", description="Help for the supported commands")
 async def help_command(interaction: discord.Interaction):
-    await Server(interaction).help_command()
+    if interaction.channel.type == discord.ChannelType.private:
+        await interaction.response.send_message(f'''
+List of available commands:
+- `/help` : displays this message
+- `/follow [user to follow]` : grants you access to the personal channels of the person you want to follow
+- `/unfollow [person to unfollow]` : removes the access to the personal channels of the person you want to unfollow
+- `/mdni` : puts an age restriction on your personal channels
+- `/fandom [name] [emoji] [hex color]` : creates a dedicated forum (accessible to everyone) and colored role that you can assign yourself in the #fandom-role-assignement channel
+        ''')
+    else:
+        await Server(interaction).help_command()
 
 try:
     client.run(token)  # type:ignore
