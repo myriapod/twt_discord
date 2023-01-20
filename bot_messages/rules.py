@@ -21,7 +21,6 @@ The rest of the server is **personal categories** that can be accessed by others
 
 Each member gets a [your discord username]-MEGA-ZONE category that regroups:
 - [your discord username]-FEED forum channel: only you can create new forum posts, but your followers (the people who have access to your personal category) can respond to them in the threads.
-- [your discord username]-ZONE text channel: you and your followers can talk freely there without the above restrictions.
 - [your discord username]-SPACE voice channel: you and your followers can join, but you should still have more moderation rights in your own personal voice channel.
 
 You get moderation rights in your own category. You can also change the name of your categories if you want to. (FYI if you do that, it will not automatically remove your categories if you leave the server).

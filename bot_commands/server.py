@@ -69,6 +69,8 @@ class Server():
         # respond to the command
         await self.interaction.followup.send(f'The server has been configured. Visit {self.guild.rules_channel.mention} for more informations.')
 
+
+
     async def create_forum(self, name):
         kpop_cat = find_category(self.interaction, 'kpop extravaganza')
         return await self.guild.create_forum(name=f'{name}', category=kpop_cat)
@@ -92,6 +94,7 @@ class Server():
         await self.interaction.response.defer()
         await asyncio.sleep(2)
         await self.interaction.followup.send(f'The fandom {name} has been created! You can now use the {forum.mention} forum and also attribute yourself the {name} role in {role_channel.mention} by clicking on the emoji under {name}')
+
 
     async def help_command(self):
         role_assignment = find_channel(

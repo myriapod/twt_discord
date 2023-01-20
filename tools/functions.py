@@ -35,7 +35,8 @@ async def create_env(member):
     # create personal channels and categories
     category = await member.guild.create_category(f'{member.name}-mega-zone', overwrites=overwrites)
 
-    text_channel = await member.guild.create_text_channel(name=f'{member.name}-zone', category=category, overwrites=overwrites_text)
+    # leaving out the text_channel for now to reduce the cluster
+    # text_channel = await member.guild.create_text_channel(name=f'{member.name}-zone', category=category, overwrites=overwrites_text)
 
     forum_channel = await member.guild.create_forum(name=f'{member.name}-feed', category=category, overwrites=overwrites)
 
@@ -82,33 +83,21 @@ def get_member_roles(member):
 async def follow(interaction, member, user):
     """
     Function to follow a user as member
-    // Could be rewritten better
     """
-    r_name = f'{user.name}-follower'
-
-    # values to make the bot verbose
-    already_following = False
-    user_found = False
-
-    for role in interaction.guild.roles:
-        if role.name == r_name:
-            user_found = True
-
-            # check to see if the member isn't already following the requested user
-            for m_role in member.roles:
-                if role == m_role:
-                    print(f'{member.name} is already following {user.name}')
-                    await interaction.response.send_message(f'{member.name} is already following {user.name}')
-                    already_following = True
-
-            if not already_following:
-                await member.add_roles(role)
-                print(f'{member.name} is now following {user.name}')
-                await interaction.response.send_message(f'{member.mention} is now following {user.mention}')
-
-    if not user_found:
+    if not interaction.guild.get_member(user.id):
         print(f'The user {user.name} is not in the server.')
         await interaction.response.send_message(f"Couldn't find {user.name} in the server.")
+
+    else:
+        follower_role = discord.utils.get(interaction.guild.channels, name=f'{user.name}-follower')
+        
+        if member.get_role(follower_role.id):
+            print(f'{member.name} is already following {user.name}')
+            await interaction.response.send_message(f'{member.name} is already following {user.name}')
+        else:
+            await member.add_roles(follower_role)
+            print(f'{member.name} is now following {user.name}')
+            await interaction.response.send_message(f'{member.mention} is now following {user.mention}')
 
 
 def find_category(interaction, name):
