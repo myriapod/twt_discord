@@ -3,7 +3,6 @@ from discord import app_commands
 from discord.ext import commands
 
 import os
-from dotenv import load_dotenv
 
 from bot_commands.catchup import CatchUp
 from bot_commands.env import Env
@@ -14,9 +13,7 @@ from bot_commands.fandom import Fandom
 
 from tools.bot_intents import intents
 
-load_dotenv()
-
-token = os.getenv('TWT_DISCORD_API_KEY')
+token = os.environ.get('TWT_DISCORD_API_KEY')
 
 class aclient(discord.Client):
     def __init__(self):
@@ -33,7 +30,7 @@ class aclient(discord.Client):
 
     async def on_member_join(self, member):
         channel = await member.create_dm()
-        welcome = open('bot_messages/welcome.txt','r', encoding='utf-8')       
+        welcome = open('bot_messages/welcome.txt', 'r', encoding='utf-8')
         await channel.send(welcome.read())
         await Env(member=member).join()
 
