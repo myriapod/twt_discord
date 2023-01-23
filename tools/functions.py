@@ -42,7 +42,7 @@ async def create_env(member):
 
     voice_channel = await member.guild.create_voice_channel(name=f'{member.name}-space', category=category, overwrites=overwrites)
 
-    print(f'[CATCH UP] The environment for {member.name} is set up.')
+    print(f'[ENV] The environment for {member.name} is set up.')
 
 
 async def manual_env(ctx, member):

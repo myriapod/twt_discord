@@ -47,7 +47,6 @@ class Env():
 
         new_category = self.message.channel.category
         if new_category and "zone" in new_category.name:
-            print(new_category.position)
             await new_category.edit(position=2)
             print(
                 f'[LATEST PERSONAL] Category {new_category.name} moved to the top')
