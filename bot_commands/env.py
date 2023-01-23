@@ -44,12 +44,15 @@ class Env():
         """
         sort the categories from latest activity to oldest activity
         """
+
         new_category = self.message.channel.category
         if new_category and "zone" in new_category.name:
+            print(new_category.position)
             await new_category.edit(position=3)
             print(
                 f'[LATEST PERSONAL] Category {new_category.name} moved to the top')
         elif new_category:
+            print(new_category.position)
             try:
                 await self.message.channel.parent.edit(position=0)
                 print(
