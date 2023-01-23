@@ -26,12 +26,14 @@ class aclient(discord.Client):
         if not self.synced:
             await tree.sync()
             self.synced = True
-        print(f'We have logged in as {self.user}')
+        print(f'[LOG IN] We have logged in as {self.user}')
 
     async def on_member_join(self, member):
-        channel = await member.create_dm()
-        welcome = open('bot_messages/welcome.txt', 'r', encoding='utf-8')
-        await channel.send(welcome.read())
+        # Sending a DM to the members when they join:
+        # not used for now
+        # channel = await member.create_dm()
+        # welcome = open('bot_messages/welcome.txt', 'r', encoding='utf-8')
+        # await channel.send(welcome.read())
         await Env(member=member).join()
 
     async def on_member_remove(self, member):
@@ -137,4 +139,4 @@ List of available commands:
 try:
     client.run(token)  # type:ignore
 except:
-    print('Missing token. Please fill in the token variable in the .env file.')
+    print('[LOG IN] [ERROR] Missing token. Please fill in the token variable in the .env file.')

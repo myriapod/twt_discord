@@ -9,9 +9,10 @@ class Fandom():
 
     async def assign_fandom(self, reaction_channel):
         message = await reaction_channel.fetch_message(self.msg_id)
-        self.fandom_name = message.content
+        fandom_name = message.content
 
-        self.fandom_role = discord.utils.get(
-            self.guild.roles, name=self.fandom_name)
+        fandom_role = discord.utils.get(
+            self.guild.roles, name=fandom_name)
 
-        await self.member.add_roles(self.fandom_role)  # type: ignore
+        await self.member.add_roles(fandom_role)  # type: ignore
+        print(f"[REACT ROLE] added role {fandom_role.name} to user {self.member.name}")

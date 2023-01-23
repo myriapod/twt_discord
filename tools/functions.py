@@ -8,7 +8,7 @@ async def create_env(member):
     - role [member.name-follower]
     - category [member.name-mega-zone]
     - forum channel [member.name-feed]
-    - text channel [member.name-zone]
+    - XX REMOVED XX text channel [member.name-zone]
     - voice channel [member.name-space]
     """
     # create the name role
@@ -42,7 +42,7 @@ async def create_env(member):
 
     voice_channel = await member.guild.create_voice_channel(name=f'{member.name}-space', category=category, overwrites=overwrites)
 
-    print(f'The environment for {member.name} is set up.')
+    print(f'[CATCH UP] The environment for {member.name} is set up.')
 
 
 async def manual_env(ctx, member):
@@ -62,7 +62,7 @@ async def manual_env(ctx, member):
     if role and followers:
         await create_env(member)
     else:
-        print(f"ERROR: Roles for {member.name} weren't manually set up")
+        print(f"[CATCH UP] [MANUAL] ERROR: Roles for {member.name} weren't manually set up")
         # await ctx.channel.send(f"ERROR: Roles for {member.mention} weren't manually set up")
 
 
@@ -78,26 +78,6 @@ def get_member_roles(member):
         elif role.name == f'{member.display_name}-follower':
             roles.append(role)
     return roles
-
-
-async def follow(interaction, member, user):
-    """
-    Function to follow a user as member
-    """
-    if not interaction.guild.get_member(user.id):
-        print(f'The user {user.name} is not in the server.')
-        await interaction.response.send_message(f"Couldn't find {user.name} in the server.")
-
-    else:
-        follower_role = discord.utils.get(interaction.guild.channels, name=f'{user.name}-follower')
-        
-        if member.get_role(follower_role.id):
-            print(f'{member.name} is already following {user.name}')
-            await interaction.response.send_message(f'{member.name} is already following {user.name}')
-        else:
-            await member.add_roles(follower_role)
-            print(f'{member.name} is now following {user.name}')
-            await interaction.response.send_message(f'{member.mention} is now following {user.mention}')
 
 
 def find_category(interaction, name):

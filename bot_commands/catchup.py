@@ -12,26 +12,27 @@ class CatchUp():
         self.interaction = interaction
 
     async def auto(self):
-        print(f'Catching up while the bot was gone...')
+        print('[CATCH UP] [AUTO] Catching up while the bot was gone...')
         for member in self.interaction.guild.members:
             if len(member.roles) == 1:
-                print(f'> {member.name} is a new member')
+                print(f'[CATCH UP] [AUTO] {member.name} is a new member')
                 await create_env(member)
-        print(f'Done!')
         await self.interaction.response.defer()
         await asyncio.sleep(5)
         await self.interaction.followup.send('All caught up!')
+        print('[CATCH UP] [AUTO] The bot is caught up.')
 
     async def manual(self):
-        print("Looking for users without environments...")
+        print("[CATCH UP] [MANUAL] Looking for users without environments...")
         for member in self.interaction.guild.members:
             env = False
             for channel in self.interaction.guild.categories:
                 if member.name in channel.name:
                     env = True
             if not env:
+                print(f'[CATCH UP] [MANUAL] {member.name} is a new member')
                 await manual_env(self.interaction, member)
-        print(f'Done!')
         await self.interaction.response.defer()
         await asyncio.sleep(5)
         await self.interaction.followup.send('All caught up!')
+        print('[CATCH UP] [MANUAL] The bot is caught up.')

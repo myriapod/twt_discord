@@ -16,14 +16,14 @@ class Follow():
                 for m_role in self.follower.roles:
                     if role == m_role:
                         print(
-                            f'{self.follower.name} is already following {self.target.name}')
+                            f'[FOLLOW] {self.follower.name} is already following {self.target.name}')
                         await self.interaction.response.send_message(f'{self.follower.name} is already following {self.target.name}')
                         already_following = True
 
                 if not already_following:
                     await self.follower.add_roles(role)
                     print(
-                        f'{self.follower.name} is now following {self.target.name}')
+                        f'[FOLLOW] {self.follower.name} is now following {self.target.name}')
                     await self.interaction.response.send_message(f'{self.follower.mention} is now following {self.target.mention}')
 
     async def unfollow(self):
@@ -48,5 +48,5 @@ class Follow():
                     if role == m_role:
                         await self.follower.remove_roles(role)
                         print(
-                            f'{self.follower.name} has unfollowed {self.target.name}')
+                            f'[UNFOLLOW] {self.follower.name} has unfollowed {self.target.name}')
                         await self.interaction.response.send_message(f'You have unfollowed {self.target.mention}', ephemeral=True)

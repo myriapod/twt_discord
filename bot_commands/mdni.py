@@ -1,3 +1,6 @@
+import discord
+
+
 class NSFW():
     def __init__(self, interaction, user):
         self.interaction = interaction
@@ -13,5 +16,10 @@ class NSFW():
             await nsfw_category.edit(nsfw=True)
             for channel in nsfw_category.channels:
                 await channel.edit(nsfw=True)
-            print(f'The environment for {self.user} has been age restricted.')
+            print(
+                f'[MDNI] The environment for {self.user} has been age restricted.')
             await self.interaction.response.send_message(f'The personal channels of {self.user.mention} are now age restricted.', ephemeral=True)
+        else:
+            print(
+                f'[MDNI] [ERROR] The environment for {self.user} could not be found.')
+            await self.interaction.response.send_message(f'[ERROR] The personal channels of {self.user.mention} could not be found. Your category name needs to include your Discord name.', ephemeral=True)
