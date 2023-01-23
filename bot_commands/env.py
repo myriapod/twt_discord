@@ -48,7 +48,7 @@ class Env():
         if new_category and new_category.position >= 7:
             await new_category.edit(position=7)
             print(
-                f'[LATEST PERSONAL] Category {new_category.name} moved to the top')
+                f'[LATEST PERSONAL] Category {new_category.name} moved to the top {new_category.position}')
         elif new_category:
             try:
                 await self.message.channel.parent.edit(position=0)
