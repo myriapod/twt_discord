@@ -46,9 +46,9 @@ class Env():
         """
         new_category = self.message.channel.category
         if new_category and new_category.name not in ["kpop-extravaganza", "general-chat"]:
-            await new_category.edit(position=3)
+            await new_category.edit(position=5)
             print(
-                f'[LATEST PERSONAL] Category {new_category.name} moved to the top {new_category.position}')
+                f'[LATEST PERSONAL] Category {new_category.name} moved to the top')
         elif new_category:
             try:
                 await self.message.channel.parent.edit(position=0)
